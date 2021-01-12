@@ -6,10 +6,28 @@
     22 21
     23 24 #yellow
 """
-import random
-solved = ['0', 'w', 'w', 'w', 'w', 'o', 'o', 'o', 'o', 'g', 'g', 'g', 'g', 'r', 'r', 'r', 'r', 'b', 'b', 'b', 'b', 'y', 'y', 'y', 'y', '']
+import random, time, itertools
+solved = ['0', 'w', 'w', 'w', 'w', 'o', 'o', 'o', 'o', 'g', 'g', 'g', 'g', 'r', 'r', 'r', 'r', 'b', 'b', 'b', 'b', 'y', 'y', 'y', 'y']
 scrambled = list(solved)
 new = []
+data_sessions = ''
+current_formatted = ''
+others_formatted = ''
+n = ''
+u = 0
+w = 0
+keeps = ''
+x = 0
+z = 0
+best_five = 0
+best_twelve = 0
+best_solve = 999.99
+worst_solve = 0.0
+currentsession = []
+todo = []
+was = ''
+bad = []
+moves = ['R', 'R\'', 'R2', 'U', 'U\'', 'U2', 'F', 'F\'', 'F2']
 def move_R(current):
     new = list(current)
     new[1] = current[9]
@@ -166,12 +184,11 @@ def scramble(current, entered_scramble):
         elif x == 'F2':
             current = move_F2(current)
         else:
-            print('error')
-        current[25] = current[25] + x + ' '
+            pass
     return current
 def generate():
     last = 'i'
-    scramble = '( '
+    scramble = ''
     moves = ['R', 'R\'', 'R2', 'U', 'U\'', 'U2', 'F', 'F\'', 'F2']
     for i in 'twelveletter':
         index = random.randint(0, 8)
@@ -179,24 +196,109 @@ def generate():
             index = random.randint(0, 8)
         scramble = scramble + moves[index] + ' '
         last = moves[index]
-    scramble = scramble + ')'
     return scramble
-print('CUBE(2x2)v1.6\nenter to quit')
-which = 0
-while which != 'q':
-    entered_scramble = input('enter moves (\'r\' for random): ')
-    if entered_scramble != 'r' or '':
-        which = input('(c)urrent or (n)ew cube? (q): ')
-        if which == 'n':
-            result = solved
+def output(scrambled):
+    print('     {} {}\n     {} {}\n{} {}  {} {}  {} {}  {} {}\n{} {}  {} {}  {} {}  {} {}\n     {} {}\n     {} {}'.format(scrambled[2], scrambled[1], scrambled[3], scrambled[4], scrambled[6], scrambled[5], scrambled[10], scrambled[9], scrambled[14], scrambled[13], scrambled[18], scrambled[17], scrambled[7], scrambled[8], scrambled[11], scrambled[12], scrambled[15], scrambled[16], scrambled[19], scrambled[20], scrambled[22], scrambled[21], scrambled[23], scrambled[24]))
+'''
+3,674,160
+PRODUCT:
+len1=9
+len2=81
+len3=729
+len4=6,5761
+len5=59,049
+len6=531,441
+PERMUTATIONS:
+len1=9
+len2=72
+len3=504
+len4=3,024
+len5=15,120
+len6=60,480
+MODIFIED PRODUCT:
+len1=9
+len2=54
+len3=324
+len4=1,944
+len5=11,664
+len6=
+'''
+print('CUBE(2x2)v2.2')
+choice = input('timer, (e)ditor, (c)alculator: ')
+if choice == 'c':
+    while True:
+        q = input('depth: ')
+        starting = time.time()
+        for x in itertools.product(moves, repeat=int(q)):
+            for i in x:
+                if i[0] == was:
+                    bad.append(' '.join(x))
+                    break
+                was = i[0]
+            todo.append(' '.join(x))
+            was = ''
+        for h in todo[:]:
+            if h in bad:
+                todo.remove(h)
+        ending = time.time()
+        print(todo, len(todo), '{:.2f}s'.format(ending - starting))
+        todo = []
+        bad = []
+        was = ''
+elif choice == 'e':
+    while True:
+        moves = input(': ')
+        if moves == 'r':
+            state = solved
+            keeps = ''
         else:
-            result = scrambled
-    else:
-        result = solved
-        entered_scramble = generate()
-    scrambled = scramble(result, entered_scramble)
-    print(scrambled)
-    def output(scrambled):
-        print('     {} {}\n     {} {}\n{} {}  {} {}  {} {}  {} {}\n{} {}  {} {}  {} {}  {} {}\n     {} {}\n     {} {}\n{}'.format(scrambled[2], scrambled[1], scrambled[3], scrambled[4], scrambled[6], scrambled[5], scrambled[10], scrambled[9], scrambled[14], scrambled[13], scrambled[18], scrambled[17], scrambled[7], scrambled[8], scrambled[11], scrambled[12], scrambled[15], scrambled[16], scrambled[19], scrambled[20], scrambled[22], scrambled[21], scrambled[23], scrambled[24], scrambled[25]))
-    output(scrambled)
-    scrambled[25] = scrambled[25] + '- '
+            keeps = keeps + moves + ' - '
+            state = scramble(solved, keeps)
+        output(state)
+        print('( {})'.format(keeps))
+else:
+    while True:
+        keep = generate()
+        scrambled = scramble(solved, keep)
+        output(scrambled)
+        print('( {})'.format(keep))
+        wait = input('start timer')
+        start = time.time()
+        n = input()
+        end = time.time()
+        timed = end - start
+        timed = '{:.2f}'.format(timed)
+        print(timed)
+        currentsession.append(timed)
+        if float(timed) > worst_solve:
+            worst_solve = float(timed)
+            print('new worst solve')
+        if float(timed) < best_solve:
+            best_solve = float(timed)
+            print('new best solve')
+        w += 1
+        if (w % 5) == 0:
+            for i in currentsession:
+                x += float(i)
+            current_five = x/5
+            x = 0
+            print('new avg 5: {:.2f}'.format(current_five))
+            if current_five > best_five:
+                print('(also session record for 5)')
+                best_five = current_five
+        if (w % 12) == 0:
+            for i in currentsession[-12:]:
+                x += float(i)
+            current_five = x/12
+            x = 0
+            print('new avg 12: {:.2f}'.format(current_twelve))
+            if current_twelve > best_twelve:
+                print('(also session record for 12)')
+                best_twelve = current_twelve
+        for i in currentsession:
+            x += float(i)
+            z += 1.0
+        session_avg = x/z
+        x = 0
+        z = 0
+        print('session avg: {:.2f}\n\n\n'.format(session_avg))
