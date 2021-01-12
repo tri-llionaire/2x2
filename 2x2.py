@@ -171,25 +171,26 @@ def scramble(current, entered_scramble):
     return current
 def generate():
     last = 'i'
-    scramble = ''
+    scramble = '( '
     moves = ['R', 'R\'', 'R2', 'U', 'U\'', 'U2', 'F', 'F\'', 'F2']
-    for i in moves:
+    for i in 'twelveletter':
         index = random.randint(0, 8)
         while last[0] == moves[index][0]:
             index = random.randint(0, 8)
         scramble = scramble + moves[index] + ' '
         last = moves[index]
+    scramble = scramble + ')'
     return scramble
-print('CUBE(2x2)v1.4\nenter to quit')
+print('CUBE(2x2)v1.6\nenter to quit')
 which = 0
-while which != '':
+while which != 'q':
     entered_scramble = input('enter moves (\'r\' for random): ')
-    if entered_scramble != 'r':
-        which = input('(c)urrent or (n)ew cube? (_): ')
-        if which == 'c':
-            result = scrambled
-        else:
+    if entered_scramble != 'r' or '':
+        which = input('(c)urrent or (n)ew cube? (q): ')
+        if which == 'n':
             result = solved
+        else:
+            result = scrambled
     else:
         result = solved
         entered_scramble = generate()
@@ -198,3 +199,4 @@ while which != '':
     def output(scrambled):
         print('     {} {}\n     {} {}\n{} {}  {} {}  {} {}  {} {}\n{} {}  {} {}  {} {}  {} {}\n     {} {}\n     {} {}\n{}'.format(scrambled[2], scrambled[1], scrambled[3], scrambled[4], scrambled[6], scrambled[5], scrambled[10], scrambled[9], scrambled[14], scrambled[13], scrambled[18], scrambled[17], scrambled[7], scrambled[8], scrambled[11], scrambled[12], scrambled[15], scrambled[16], scrambled[19], scrambled[20], scrambled[22], scrambled[21], scrambled[23], scrambled[24], scrambled[25]))
     output(scrambled)
+    scrambled[25] = scrambled[25] + '- '
