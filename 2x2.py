@@ -7,7 +7,7 @@
     23 24 #yellow
 """
 import random, time, itertools
-solved = ['0', 'w', 'w', 'w', 'w', 'o', 'o', 'o', 'o', 'g', 'g', 'g', 'g', 'r', 'r', 'r', 'r', 'b', 'b', 'b', 'b', 'y', 'y', 'y', 'y']
+solved = ['0', 'w', 'w', 'w', 'w', 'o', 'o', 'o', 'o', 'g', 'g', 'g', 'g', 'r', 'r', 'r', 'r', 'b', 'b', 'b', 'b', 'y', 'y', 'y', 'y', '']
 scrambled = list(solved)
 new = []
 data_sessions = ''
@@ -19,6 +19,9 @@ w = 0
 keeps = ''
 x = 0
 z = 0
+q = 1
+fromscrambled = []
+fromsolved = []
 best_five = 0
 best_twelve = 0
 best_solve = 999.99
@@ -26,8 +29,11 @@ worst_solve = 0.0
 currentsession = []
 todo = []
 was = ''
+sol = []
+newv = ''
 bad = []
 moves = ['R', 'R\'', 'R2', 'U', 'U\'', 'U2', 'F', 'F\'', 'F2']
+current = list(solved)
 def move_R(current):
     new = list(current)
     new[1] = current[9]
@@ -199,61 +205,105 @@ def generate():
     return scramble
 def output(scrambled):
     print('     {} {}\n     {} {}\n{} {}  {} {}  {} {}  {} {}\n{} {}  {} {}  {} {}  {} {}\n     {} {}\n     {} {}'.format(scrambled[2], scrambled[1], scrambled[3], scrambled[4], scrambled[6], scrambled[5], scrambled[10], scrambled[9], scrambled[14], scrambled[13], scrambled[18], scrambled[17], scrambled[7], scrambled[8], scrambled[11], scrambled[12], scrambled[15], scrambled[16], scrambled[19], scrambled[20], scrambled[22], scrambled[21], scrambled[23], scrambled[24]))
-'''
-3,674,160
-PRODUCT:
-len1=9
-len2=81
-len3=729
-len4=6,5761
-len5=59,049
-len6=531,441
-PERMUTATIONS:
-len1=9
-len2=72
-len3=504
-len4=3,024
-len5=15,120
-len6=60,480
-MODIFIED PRODUCT:
-len1=9
-len2=54
-len3=324
-len4=1,944
-len5=11,664
-len6=
-'''
-print('CUBE(2x2)v2.2')
+def remove(string):
+    string = string.split()
+    last = '0'
+    h = 0
+    for x in string:
+        if last[0] == x[0]:
+            h = 1
+        last = x
+    if h == 1:
+        return True
+    else:
+        return False
+def guesses(todo, repeating, was):
+    for x in itertools.product(moves, repeat=repeating):
+        for i in x:
+            if i[0] == was:
+                bad.append(' '.join(x))
+                break
+            was = i[0]
+        todo.append(' '.join(x))
+        was = ''
+    for h in todo[:]:
+        if h in bad:
+            todo.remove(h)
+    return todo
+print('CUBE(2x2)v3.0')
 choice = input('timer, (e)ditor, (c)alculator: ')
 if choice == 'c':
-    while True:
-        q = input('depth: ')
-        starting = time.time()
-        for x in itertools.product(moves, repeat=int(q)):
-            for i in x:
-                if i[0] == was:
-                    bad.append(' '.join(x))
+    scr = input('enter scramble (l for list, r for random): ')
+    if scr == 'l':
+        current = input(': ')
+    elif scr == 'r':
+        top = generate()
+        current = scramble(solved, top)
+        print(top)
+    else:
+        current = scramble(solved, scr)
+    output(current)
+    print('ready to find')
+    starting = time.time()
+    while q != 0:
+        for l in guesses(todo, q, was):
+            fromscrambled.append(scramble(current, l))
+            fromsolved.append(scramble(solved, l))
+        print('scrambled all at depth {}({})'.format(q, q*2))
+        for u in fromscrambled:
+            for v in fromsolved:
+                if v[25] in sol:
                     break
-                was = i[0]
-            todo.append(' '.join(x))
-            was = ''
-        for h in todo[:]:
-            if h in bad:
-                todo.remove(h)
-        ending = time.time()
-        print(todo, len(todo), '{:.2f}s'.format(ending - starting))
-        todo = []
-        bad = []
-        was = ''
+                if u[25] in sol:
+                    break
+                if u[:24] == v[:24]:
+                    newv = ''
+                    vs = v[25].split()
+                    for i in vs[::-1]:
+                        if i == 'R':
+                            newv = newv + 'R\' '
+                        elif i == 'U':
+                            newv = newv + 'U\' '
+                        elif i == 'F':
+                            newv = newv + 'F\' '
+                        elif i == 'R\'':
+                            newv = newv + 'R '
+                        elif i == 'U\'':
+                            newv = newv + 'U '
+                        elif i == 'F\'':
+                            newv = newv + 'F '
+                        else:
+                            newv = newv + i + ' '
+                    nex = u[25] + ' ' + newv
+                    print(u[25], newv)
+                    if nex not in sol:
+                        if remove(nex) == False:
+                            print('matched', nex)
+                            sol.append(nex)
+                if u[:24] == solved[:24]:
+                    print('solution', u[25])
+                    sol.append(u[25])
+                if v[:24] == solved[:24]:
+                    print('solution', v[25])
+                    sol.append(v[25])
+        print('finished checking')
+        if not sol:
+            print('trying depth {}({})'.format(q+1, (q+1)*2))
+        else:
+            q = -1
+        q += 1
+    ending = time.time()
+    print('done at {:.2f}s'.format(ending - starting))
 elif choice == 'e':
     while True:
-        moves = input(': ')
+        moves = input('enter (r for random): ')
         if moves == 'r':
-            state = solved
-            keeps = ''
+            keeps = generate()
+            state = scramble(current, keeps)
         else:
             keeps = keeps + moves + ' - '
             state = scramble(solved, keeps)
+        print(state)
         output(state)
         print('( {})'.format(keeps))
 else:
