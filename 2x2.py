@@ -170,6 +170,7 @@ def move_F2(current):
     new[12] = current[10]
     return new
 def scramble(current, entered_scramble):
+    current[25] = entered_scramble
     for x in entered_scramble.split():
         if x == 'R':
             current = move_R(current)
@@ -230,7 +231,7 @@ def guesses(todo, repeating, was):
         if h in bad:
             todo.remove(h)
     return todo
-print('CUBE(2x2)v3.0')
+print('CUBE(2x2)v3.1')
 choice = input('timer, (e)ditor, (c)alculator: ')
 if choice == 'c':
     scr = input('enter scramble (l for list, r for random): ')
@@ -275,7 +276,6 @@ if choice == 'c':
                         else:
                             newv = newv + i + ' '
                     nex = u[25] + ' ' + newv
-                    print(u[25], newv)
                     if nex not in sol:
                         if remove(nex) == False:
                             print('matched', nex)
@@ -301,7 +301,7 @@ elif choice == 'e':
             keeps = generate()
             state = scramble(current, keeps)
         else:
-            keeps = keeps + moves + ' - '
+            keeps = keeps + moves + ' '
             state = scramble(solved, keeps)
         print(state)
         output(state)
