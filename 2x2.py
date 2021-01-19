@@ -158,6 +158,11 @@ def find(u):
     else:
         side = ''
         return False
+def issolved(status):
+    if (status[1] == status[2] == status[3] == status[4]) and (status[5] == status[6] == status[7] == status[8]) and (status[9] == status[10] == status[11] == status[12]) and (status[13] == status[14] == status[15] == status[16]) and (status[17] == status[18] == status[19] == status[20]) and (status[21] == status[22] == status[23] == status[24]):
+        return True
+    else:
+        return False
 def rot_x(current):
     new = movedictionary.move_R(current)
     new = movedictionary.or_Lp(new)
@@ -194,7 +199,7 @@ def rot_zd(current):
     new = movedictionary.move_Fd(current)
     new = movedictionary.or_Bd(new)
     return new
-print('CUBE(2x2)v3.6')
+print('CUBE(2x2)v3.8')
 choice = input('timer, (e)ditor, (c)alculator: ')
 if choice == 'c':
     scr = input('enter scramble (l for list, r for random): ')
@@ -210,6 +215,7 @@ if choice == 'c':
     print('ready to find')
     starting = time.time()
     while q != 0:
+        todo = []
         for l in guesses(todo, q):
             fromscrambled.append(scramble(current, l))
             fromsolved.append(scramble(solved, l))
@@ -241,13 +247,13 @@ if choice == 'c':
                     nex = u[25] + ' ' + newv
                     if nex not in sol:
                         if remove(nex) == False:
-                            print('matched {}({})'.format(nex, len(nex.split())))
+                            print('matched {}({}) at {:.2f}s'.format(nex, len(nex.split()), time.time() - starting))
                             sol.append(nex)
-                if u[:24] == solved[:24]:
-                    print('solution', u[25])
+                if issolved(u) == True:
+                    print('solution {}({}) at {:.2f}s'.format(u[25], len(v[25].split()), time.time() - starting))
                     sol.append(u[25])
-                if v[:24] == solved[:24]:
-                    print('solution', v[25])
+                if issolved(v) == True:
+                    print('solution {}({}) at {:.2f}s'.format(v[25], len(v[25].split()), time.time() - starting))
                     sol.append(v[25])
         print('finished checking')
         if not sol:
@@ -255,8 +261,7 @@ if choice == 'c':
         else:
             q = -1
         q += 1
-    ending = time.time()
-    print('done at {:.2f}s'.format(ending - starting))
+    print('done at {:.2f}s'.format(time.time() - starting))
 elif choice == 'e':
     while True:
         moves = input('enter (r for random): ')
