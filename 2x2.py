@@ -7,6 +7,7 @@
     23 24 #yellow
 """
 import random, time, itertools
+import movedictionary
 solved = ['0', 'w', 'w', 'w', 'w', 'o', 'o', 'o', 'o', 'g', 'g', 'g', 'g', 'r', 'r', 'r', 'r', 'b', 'b', 'b', 'b', 'y', 'y', 'y', 'y', '']
 scrambled = list(solved)
 new = []
@@ -20,6 +21,7 @@ keeps = ''
 x = 0
 z = 0
 q = 1
+g = 1
 fromscrambled = []
 fromsolved = []
 best_five = 0
@@ -28,168 +30,68 @@ best_solve = 999.99
 worst_solve = 0.0
 currentsession = []
 todo = []
-was = ''
 sol = []
 newv = ''
 bad = []
 moves = ['R', 'R\'', 'R2', 'U', 'U\'', 'U2', 'F', 'F\'', 'F2']
 current = list(solved)
-def move_R(current):
-    new = list(current)
-    new[1] = current[9]
-    new[4] = current[12]
-    new[9] = current[21]
-    new[12] = current[24]
-    new[18] = current[4]
-    new[19] = current[1]
-    new[21] = current[19]
-    new[24] = current[18]
-    new[13] = current[14]
-    new[14] = current[15]
-    new[15] = current[16]
-    new[16] = current[13]
-    return new
-def move_Rp(current):
-    new = list(current)
-    new[1] = current[19]
-    new[4] = current[18]
-    new[9] = current[1]
-    new[12] = current[4]
-    new[18] = current[24]
-    new[19] = current[21]
-    new[21] = current[9]
-    new[24] = current[12]
-    new[13] = current[16]
-    new[14] = current[13]
-    new[15] = current[14]
-    new[16] = current[15]
-    return new
-def move_R2(current):
-    new = list(current)
-    new[1] = current[21]
-    new[4] = current[24]
-    new[9] = current[19]
-    new[12] = current[18]
-    new[18] = current[12]
-    new[19] = current[9]
-    new[21] = current[1]
-    new[24] = current[4]
-    new[13] = current[15]
-    new[14] = current[16]
-    new[15] = current[13]
-    new[16] = current[14]
-    return new
-def move_U(current):
-    new = list(current)
-    new[5] = current[9]
-    new[6] = current[10]
-    new[9] = current[13]
-    new[10] = current[14]
-    new[13] = current[17]
-    new[14] = current[18]
-    new[17] = current[5]
-    new[18] = current[6]
-    new[1] = current[2]
-    new[2] = current[3]
-    new[3] = current[4]
-    new[4] = current[1]
-    return new
-def move_Up(current):
-    new = list(current)
-    new[5] = current[17]
-    new[6] = current[18]
-    new[9] = current[5]
-    new[10] = current[6]
-    new[13] = current[9]
-    new[14] = current[10]
-    new[17] = current[13]
-    new[18] = current[14]
-    new[1] = current[4]
-    new[2] = current[1]
-    new[3] = current[2]
-    new[4] = current[3]
-    return new
-def move_U2(current):
-    new = list(current)
-    new[5] = current[13]
-    new[6] = current[14]
-    new[9] = current[17]
-    new[10] = current[18]
-    new[13] = current[5]
-    new[14] = current[6]
-    new[17] = current[9]
-    new[18] = current[10]
-    new[1] = current[3]
-    new[2] = current[4]
-    new[3] = current[1]
-    new[4] = current[2]
-    return new
-def move_F(current):
-    new = list(current)
-    new[3] = current[8]
-    new[4] = current[5]
-    new[5] = current[22]
-    new[8] = current[21]
-    new[14] = current[3]
-    new[15] = current[4]
-    new[21] = current[14]
-    new[22] = current[15]
-    new[9] = current[10]
-    new[10] = current[11]
-    new[11] = current[12]
-    new[12] = current[9]
-    return new
-def move_Fp(current):
-    new = list(current)
-    new[3] = current[14]
-    new[4] = current[15]
-    new[5] = current[4]
-    new[8] = current[3]
-    new[14] = current[21]
-    new[15] = current[22]
-    new[21] = current[8]
-    new[22] = current[5]
-    new[9] = current[12]
-    new[10] = current[9]
-    new[11] = current[10]
-    new[12] = current[11]
-    return new
-def move_F2(current):
-    new = list(current)
-    new[3] = current[21]
-    new[4] = current[22]
-    new[5] = current[15]
-    new[8] = current[14]
-    new[14] = current[8]
-    new[15] = current[5]
-    new[21] = current[3]
-    new[22] = current[4]
-    new[9] = current[11]
-    new[10] = current[12]
-    new[11] = current[9]
-    new[12] = current[10]
-    return new
 def scramble(current, entered_scramble):
     current[25] = entered_scramble
     for x in entered_scramble.split():
         if x == 'R':
-            current = move_R(current)
+            current = movedictionary.move_R(current)
         elif x == 'R\'':
-            current = move_Rp(current)
+            current = movedictionary.move_Rp(current)
         elif x == 'R2':
-            current = move_R2(current)
+            current = movedictionary.move_Rd(current)
         elif x == 'U':
-            current = move_U(current)
+            current = movedictionary.move_U(current)
         elif x == 'U\'':
-            current = move_Up(current)
+            current = movedictionary.move_Up(current)
         elif x == 'U2':
-            current = move_U2(current)
+            current = movedictionary.move_Ud(current)
         elif x == 'F':
-            current = move_F(current)
+            current = movedictionary.move_F(current)
         elif x == 'F\'':
-            current = move_Fp(current)
+            current = movedictionary.move_Fp(current)
         elif x == 'F2':
-            current = move_F2(current)
+            current = movedictionary.move_Fd(current)
+        elif x == 'L':
+            current = movedictionary.or_L(current)
+        elif x == 'L\'':
+            current = movedictionary.or_Lp(current)
+        elif x == 'L2':
+            current = movedictionary.or_Ld(current)
+        elif x == 'D':
+            current = movedictionary.or_D(current)
+        elif x == 'D\'':
+            current = movedictionary.or_Dp(current)
+        elif x == 'D2':
+            current = movedictionary.or_Dd(current)
+        elif x == 'B':
+            current = movedictionary.or_B(current)
+        elif x == 'B\'':
+            current = movedictionary.or_Bp(current)
+        elif x == 'B2':
+            current = movedictionary.or_Bd(current)
+        elif x == 'x':
+            current = rot_x(current)
+        elif x == 'x\'':
+            current = rot_xp(current)
+        elif x == 'x2':
+            current = rot_xd(current)
+        elif x == 'y':
+            current = rot_y(current)
+        elif x == 'y\'':
+            current = rot_yp(current)
+        elif x == 'y2':
+            current = rot_yd(current)
+        elif x == 'z':
+            current = rot_z(current)
+        elif x == 'z\'':
+            current = rot_zp(current)
+        elif x == 'z2':
+            current = rot_zd(current)
         else:
             pass
     return current
@@ -218,7 +120,8 @@ def remove(string):
         return True
     else:
         return False
-def guesses(todo, repeating, was):
+def guesses(todo, repeating):
+    was = ''
     for x in itertools.product(moves, repeat=repeating):
         for i in x:
             if i[0] == was:
@@ -231,7 +134,67 @@ def guesses(todo, repeating, was):
         if h in bad:
             todo.remove(h)
     return todo
-print('CUBE(2x2)v3.1')
+def find(u):
+    global side
+    side = ''
+    if u[1:5] == ['w', 'w', 'w', 'w']:
+        side = 'white'
+        return True
+    elif u[5:9] == ['o', 'o', 'o', 'o']:
+        side = 'orange'
+        return True
+    elif u[9:13] == ['g', 'g', 'g', 'g']:
+        side = 'green'
+        return True
+    elif u[13:17] == ['r', 'r', 'r', 'r']:
+        side = 'red'
+        return True
+    elif u[17:21] == ['b', 'b', 'b', 'b']:
+        side = 'blue'
+        return True
+    elif u[21:25] == ['y', 'y', 'y', 'y']:
+        side = 'yellow'
+        return True
+    else:
+        side = ''
+        return False
+def rot_x(current):
+    new = movedictionary.move_R(current)
+    new = movedictionary.or_Lp(new)
+    return new
+def rot_xp(current):
+    new = movedictionary.move_Rp(current)
+    new = movedictionary.or_L(new)
+    return new
+def rot_xd(current):
+    new = movedictionary.move_Rd(current)
+    new = movedictionary.or_Ld(new)
+    return new
+def rot_y(current):
+    new = movedictionary.move_U(current)
+    new = movedictionary.or_Dp(new)
+    return new
+def rot_yp(current):
+    new = movedictionary.move_Up(current)
+    new = movedictionary.or_D(new)
+    return new
+def rot_yd(current):
+    new = movedictionary.move_Ud(current)
+    new = movedictionary.or_Dd(new)
+    return new
+def rot_z(current):
+    new = movedictionary.move_F(current)
+    new = movedictionary.or_Bp(new)
+    return new
+def rot_zp(current):
+    new = movedictionary.move_Fp(current)
+    new = movedictionary.or_B(new)
+    return new
+def rot_zd(current):
+    new = movedictionary.move_Fd(current)
+    new = movedictionary.or_Bd(new)
+    return new
+print('CUBE(2x2)v3.6')
 choice = input('timer, (e)ditor, (c)alculator: ')
 if choice == 'c':
     scr = input('enter scramble (l for list, r for random): ')
@@ -247,7 +210,7 @@ if choice == 'c':
     print('ready to find')
     starting = time.time()
     while q != 0:
-        for l in guesses(todo, q, was):
+        for l in guesses(todo, q):
             fromscrambled.append(scramble(current, l))
             fromsolved.append(scramble(solved, l))
         print('scrambled all at depth {}({})'.format(q, q*2))
@@ -278,7 +241,7 @@ if choice == 'c':
                     nex = u[25] + ' ' + newv
                     if nex not in sol:
                         if remove(nex) == False:
-                            print('matched', nex)
+                            print('matched {}({})'.format(nex, len(nex.split())))
                             sol.append(nex)
                 if u[:24] == solved[:24]:
                     print('solution', u[25])
@@ -307,18 +270,24 @@ elif choice == 'e':
         output(state)
         print('( {})'.format(keeps))
 else:
+    choose = input('(e)nter times or (t)imer: ')
     while True:
         keep = generate()
         scrambled = scramble(solved, keep)
         output(scrambled)
         print('( {})'.format(keep))
-        wait = input('start timer')
-        start = time.time()
-        n = input()
-        end = time.time()
-        timed = end - start
-        timed = '{:.2f}'.format(timed)
-        print(timed)
+        if choose == 'e':
+            timed = input('enter time: ')
+            timed = '{:.2f}'.format(float(timed))
+        else:
+            wait = input('start timer')
+            start = time.time()
+            n = input()
+            end = time.time()
+            timed = end - start
+            timed = '{:.2f}'.format(float(timed))
+            print(timed)
+        time.sleep(2)
         currentsession.append(timed)
         if float(timed) > worst_solve:
             worst_solve = float(timed)
@@ -351,4 +320,20 @@ else:
         session_avg = x/z
         x = 0
         z = 0
-        print('session avg: {:.2f}\n\n\n'.format(session_avg))
+        print('session avg: {:.2f}'.format(session_avg))
+        time.sleep(2)
+        while g != 0:
+            for l in guesses(todo, g):
+                fromscrambled.append(scramble(scrambled, l))
+            for u in fromscrambled:
+                if u[25] in sol:
+                    break
+                temp = find(u)
+                if temp == True:
+                    print('solution {} {}'.format(u[25], side))
+                    sol.append(u[25])
+            if sol:
+                g = -1
+            g += 1
+        g = 1
+        print('\n\n\n')
