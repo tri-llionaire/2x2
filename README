@@ -1,5 +1,5 @@
 # 2x2
 a virtual 2x2 cube, complete with timer, scrambler, editor, solver, optimum first side finder, etc
-- solver doesn't work with cube rotations yet
-- it's also very slow sometimes
+- i haven't smoothed out the solution finder, so many solutions will include an instance of a duplicate turn on a face in the middle of the notation
 - optimum side solver doesn't have rotation support, so you'll have to modify the solution yourself
+- i'll be implementing the improvements i made on the scrambler and guesser and etc that are shown in tiny.py soon for the big program
