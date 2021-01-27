@@ -1,8 +1,7 @@
 import time, movedictionary
-solved = ['0', 'w', 'w', 'w', 'w', 'o', 'o', 'o', 'o', 'g', 'g', 'g', 'g', 'r', 'r', 'r', 'r', 'b', 'b', 'b', 'b', 'y', 'y', 'y', 'y', '']
-scrambled = list(solved)
+solved = 'wwwwooooggggrrrrbbbbyyyy'
 q = 1
-print('CUBE(2x2)v4.2')
+print('CUBE(2x2)v5.0')
 choice = input('timer, (e)ditor, (c)alculator: ')
 if choice == 'c':
     sol = []
@@ -19,20 +18,22 @@ if choice == 'c':
     print('ready to find')
     starting = time.time()
     while q != 0:
-        fromscrambled = []; fromsolved = []; sol = 0
+        fromscrambled = []; fromsolved = []; found = []
         print('trying depth {}({})'.format(q, q*2))
         finded = movedictionary.guesses(q)
         print('generated all guesses for depth {}({}) at {:.2f}s'.format(q, q*2, time.time() - starting))
         for l in finded:
-            fromscrambled.append(movedictionary.scramble(current, l))
+            fromscrambled.append(movedictionary.scramble(current[:24], l))
             fromsolved.append(movedictionary.scramble(solved, l))
         print('scrambled all at depth {}({}) at {:.2f}s'.format(q, q*2, time.time() - starting))
         for u in fromscrambled:
             for v in fromsolved:
                 if u[:24] == v[:24]:
-                    nex = u[25] + ' ' + movedictionary.reverse(v)
-                    print('matched {}({}) at {:.2f}s'.format(nex, len(nex.split()), time.time() - starting))
-                    sol = 1
+                    nex = movedictionary.clean(u[24:] + ' ' + movedictionary.reverse(v))
+                    if nex not in found:
+                        print(nex)
+                        found.append(nex)
+                        q = -1
         print('finished checking')
         if sol == 1:
             q = -1
@@ -40,6 +41,7 @@ if choice == 'c':
     print('done at {:.2f}s'.format(time.time() - starting))
 elif choice == 'e':
     while True:
+        keeps = ''
         emoves = input('enter (r for random): ')
         if emoves == 'r':
             keeps = movedictionary.generate()
