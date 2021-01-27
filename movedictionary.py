@@ -1,279 +1,118 @@
 import random, itertools
 def or_L(current):
+    lmove = '001916030506070408010211121314152217182120091023'
     new = list(current)
-    new[2] = current[20]
-    new[3] = current[17]
-    new[10] = current[2]
-    new[11] = current[3]
-    new[17] = current[23]
-    new[20] = current[22]
-    new[22] = current[10]
-    new[23] = current[11]
-    new[5] = current[6]
-    new[6] = current[7]
-    new[7] = current[8]
-    new[8] = current[5]
-    return new
+    for i in range(24):
+        new[i] = current[int(lmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_Lp(current):
+    lpmove = '000910030704050608212211121314150217180120191623'
     new = list(current)
-    new[2] = current[10]
-    new[3] = current[11]
-    new[10] = current[22]
-    new[11] = current[23]
-    new[17] = current[3]
-    new[20] = current[2]
-    new[22] = current[20]
-    new[23] = current[17]
-    new[5] = current[8]
-    new[6] = current[5]
-    new[7] = current[6]
-    new[8] = current[7]
-    return new
+    for i in range(24):
+        new[i] = current[int(lpmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_Ld(current):
+    ldmove = '002122030607040508191611121314151017180920010223'
     new = list(current)
-    new[2] = current[22]
-    new[3] = current[23]
-    new[10] = current[20]
-    new[11] = current[17]
-    new[17] = current[11]
-    new[20] = current[10]
-    new[22] = current[2]
-    new[23] = current[3]
-    new[5] = current[7]
-    new[6] = current[8]
-    new[7] = current[5]
-    new[8] = current[6]
-    return new
+    for i in range(24):
+        new[i] = current[int(ldmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_D(current):
+    dmove = '000102030405181908090607121310111617141521222320'
     new = list(current)
-    new[7] = current[19]
-    new[8] = current[20]
-    new[11] = current[7]
-    new[12] = current[8]
-    new[15] = current[11]
-    new[16] = current[12]
-    new[19] = current[15]
-    new[20] = current[16]
-    new[21] = current[22]
-    new[22] = current[23]
-    new[23] = current[24]
-    new[24] = current[21]
-    return new
+    for i in range(24):
+        new[i] = current[int(dmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_Dp(current):
+    dpmove = '000102030405101108091415121318191617060723202122'
     new = list(current)
-    new[7] = current[11]
-    new[8] = current[12]
-    new[11] = current[15]
-    new[12] = current[16]
-    new[15] = current[19]
-    new[16] = current[20]
-    new[19] = current[7]
-    new[20] = current[8]
-    new[21] = current[24]
-    new[22] = current[21]
-    new[23] = current[22]
-    new[24] = current[23]
-    return new
+    for i in range(24):
+        new[i] = current[int(dpmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_Dd(current):
+    ddmove = '000102030405141508091819121306071617101122232021'
     new = list(current)
-    new[7] = current[15]
-    new[8] = current[16]
-    new[11] = current[19]
-    new[12] = current[20]
-    new[15] = current[7]
-    new[16] = current[8]
-    new[19] = current[11]
-    new[20] = current[12]
-    new[21] = current[23]
-    new[22] = current[24]
-    new[23] = current[21]
-    new[24] = current[22]
-    return new
+    for i in range(24):
+        new[i] = current[int(ddmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_B(current):
+    bmove = '151202030400010708091011231314221718191620210506'
     new = list(current)
-    new[1] = current[16]
-    new[2] = current[13]
-    new[6] = current[1]
-    new[7] = current[2]
-    new[13] = current[24]
-    new[16] = current[23]
-    new[23] = current[6]
-    new[24] = current[7]
-    new[17] = current[18]
-    new[18] = current[19]
-    new[19] = current[20]
-    new[20] = current[17]
-    return new
+    for i in range(24):
+        new[i] = current[int(bmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_Bp(current):
+    bpmove = '050602030423220708091011011314001916171820211512'
     new = list(current)
-    new[1] = current[6]
-    new[2] = current[7]
-    new[6] = current[24]
-    new[7] = current[23]
-    new[13] = current[2]
-    new[16] = current[1]
-    new[23] = current[16]
-    new[24] = current[13]
-    new[17] = current[20]
-    new[18] = current[17]
-    new[19] = current[18]
-    new[20] = current[19]
-    return new
+    for i in range(24):
+        new[i] = current[int(bpmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def or_Bd(current):
+    bdmove = '222302030415120708091011061314051819161720210001'
     new = list(current)
-    new = list(current)
-    new[1] = current[23]
-    new[2] = current[24]
-    new[6] = current[16]
-    new[7] = current[13]
-    new[13] = current[7]
-    new[16] = current[6]
-    new[23] = current[1]
-    new[24] = current[2]
-    new[17] = current[19]
-    new[18] = current[20]
-    new[19] = current[17]
-    new[20] = current[18]
-    return new
+    for i in range(24):
+        new[i] = current[int(bdmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_R(current):
+    rmove = '080102110405060720091023131415121603001918212217'
     new = list(current)
-    new[1] = current[9]
-    new[4] = current[12]
-    new[9] = current[21]
-    new[12] = current[24]
-    new[18] = current[4]
-    new[19] = current[1]
-    new[21] = current[19]
-    new[24] = current[18]
-    new[13] = current[14]
-    new[14] = current[15]
-    new[15] = current[16]
-    new[16] = current[13]
-    return new
+    for i in range(24):
+        new[i] = current[int(rmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_Rp(current):
+    rpmove = '180102170405060700091003151213141623201908212211'
     new = list(current)
-    new[1] = current[19]
-    new[4] = current[18]
-    new[9] = current[1]
-    new[12] = current[4]
-    new[18] = current[24]
-    new[19] = current[21]
-    new[21] = current[9]
-    new[24] = current[12]
-    new[13] = current[16]
-    new[14] = current[13]
-    new[15] = current[14]
-    new[16] = current[15]
-    return new
+    for i in range(24):
+        new[i] = current[int(rpmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_Rd(current):
+    rdmove = '200102230405060718091017141512131611081900212203'
     new = list(current)
-    new[1] = current[21]
-    new[4] = current[24]
-    new[9] = current[19]
-    new[12] = current[18]
-    new[18] = current[12]
-    new[19] = current[9]
-    new[21] = current[1]
-    new[24] = current[4]
-    new[13] = current[15]
-    new[14] = current[16]
-    new[15] = current[13]
-    new[16] = current[14]
-    return new
+    for i in range(24):
+        new[i] = current[int(rdmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_U(current):
+    umove = '010203000809060712131011161714150405181920212223'
     new = list(current)
-    new[5] = current[9]
-    new[6] = current[10]
-    new[9] = current[13]
-    new[10] = current[14]
-    new[13] = current[17]
-    new[14] = current[18]
-    new[17] = current[5]
-    new[18] = current[6]
-    new[1] = current[2]
-    new[2] = current[3]
-    new[3] = current[4]
-    new[4] = current[1]
-    return new
+    for i in range(24):
+        new[i] = current[int(umove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_Up(current):
+    upmove = '030001021617060704051011080914151213181920212223'
     new = list(current)
-    new[5] = current[17]
-    new[6] = current[18]
-    new[9] = current[5]
-    new[10] = current[6]
-    new[13] = current[9]
-    new[14] = current[10]
-    new[17] = current[13]
-    new[18] = current[14]
-    new[1] = current[4]
-    new[2] = current[1]
-    new[3] = current[2]
-    new[4] = current[3]
-    return new
+    for i in range(24):
+        new[i] = current[int(upmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_Ud(current):
+    udmove = '020300011213060716171011040514150809181920212223'
     new = list(current)
-    new[5] = current[13]
-    new[6] = current[14]
-    new[9] = current[17]
-    new[10] = current[18]
-    new[13] = current[5]
-    new[14] = current[6]
-    new[17] = current[9]
-    new[18] = current[10]
-    new[1] = current[3]
-    new[2] = current[4]
-    new[3] = current[1]
-    new[4] = current[2]
-    return new
+    for i in range(24):
+        new[i] = current[int(udmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_F(current):
+    fmove = '000107042105062009101108120203151617181913142223'
     new = list(current)
-    new[3] = current[8]
-    new[4] = current[5]
-    new[5] = current[22]
-    new[8] = current[21]
-    new[14] = current[3]
-    new[15] = current[4]
-    new[21] = current[14]
-    new[22] = current[15]
-    new[9] = current[10]
-    new[10] = current[11]
-    new[11] = current[12]
-    new[12] = current[9]
-    return new
+    for i in range(24):
+        new[i] = current[int(fmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_Fp(current):
+    fpmove = '000113140305060211080910122021151617181907042223'
     new = list(current)
-    new[3] = current[14]
-    new[4] = current[15]
-    new[5] = current[4]
-    new[8] = current[3]
-    new[14] = current[21]
-    new[15] = current[22]
-    new[21] = current[8]
-    new[22] = current[5]
-    new[9] = current[12]
-    new[10] = current[9]
-    new[11] = current[10]
-    new[12] = current[11]
-    return new
+    for i in range(24):
+        new[i] = current[int(fpmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def move_Fd(current):
+    fdmove = '000120211405061310110809120704151617181902032223'
     new = list(current)
-    new[3] = current[21]
-    new[4] = current[22]
-    new[5] = current[15]
-    new[8] = current[14]
-    new[14] = current[8]
-    new[15] = current[5]
-    new[21] = current[3]
-    new[22] = current[4]
-    new[9] = current[11]
-    new[10] = current[12]
-    new[11] = current[9]
-    new[12] = current[10]
-    return new
+    for i in range(24):
+        new[i] = current[int(fdmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def rot_x(current):
-    new = move_R(current)
-    new = or_Lp(new)
-    return new
+    xmove = '080910110704050620212223131415120203000118191617'
+    new = list(current)
+    for i in range(24):
+        new[i] = current[int(xmove[(2*i):(2*i)+2])]
+    return ''.join(new)
 def rot_xp(current):
     new = move_Rp(current)
     new = or_L(new)
@@ -307,7 +146,7 @@ def rot_zd(current):
     new = or_Bd(new)
     return new
 def scramble(current, entered_scramble):
-    current[25] = entered_scramble
+    current = current + entered_scramble
     for x in entered_scramble.split():
         if x == 'R':
             current = move_R(current)
@@ -367,7 +206,7 @@ def scramble(current, entered_scramble):
             pass
     return current
 def issolved(status):
-    if (status[1] == status[2] == status[3] == status[4]) and (status[5] == status[6] == status[7] == status[8]) and (status[9] == status[10] == status[11] == status[12]) and (status[13] == status[14] == status[15] == status[16]) and (status[17] == status[18] == status[19] == status[20]) and (status[21] == status[22] == status[23] == status[24]):
+    if (status[0] == status[1] == status[2] == status[3]) and (status[4] == status[5] == status[6] == status[7]) and (status[8] == status[9] == status[10] == status[11]) and (status[12] == status[13] == status[14] == status[15]) and (status[16] == status[17] == status[18] == status[19]) and (status[20] == status[21] == status[22] == status[23]):
         return True
     else:
         return False
@@ -384,19 +223,80 @@ def guesses(repeating):
         bad = 0
     return todo
 def output(scrambled):
-    print('     {} {}\n     {} {}\n{} {}  {} {}  {} {}  {} {}\n{} {}  {} {}  {} {}  {} {}\n     {} {}\n     {} {}'.format(scrambled[2], scrambled[1], scrambled[3], scrambled[4], scrambled[6], scrambled[5], scrambled[10], scrambled[9], scrambled[14], scrambled[13], scrambled[18], scrambled[17], scrambled[7], scrambled[8], scrambled[11], scrambled[12], scrambled[15], scrambled[16], scrambled[19], scrambled[20], scrambled[22], scrambled[21], scrambled[23], scrambled[24]))
-def remove(string):
+    print('     {} {}\n     {} {}\n{} {}  {} {}  {} {}  {} {}\n{} {}  {} {}  {} {}  {} {}\n     {} {}\n     {} {}'.format(scrambled[1], scrambled[0], scrambled[2], scrambled[3], scrambled[5], scrambled[4], scrambled[9], scrambled[8], scrambled[13], scrambled[12], scrambled[17], scrambled[16], scrambled[6], scrambled[7], scrambled[10], scrambled[11], scrambled[14], scrambled[15], scrambled[18], scrambled[19], scrambled[21], scrambled[20], scrambled[22], scrambled[23]))
+def clean(string):
     string = string.split()
-    last = '0'
-    h = 0
-    for x in string:
-        if last[0] == x[0]:
-            h = 1
-        last = x
-    if h == 1:
-        return True
-    else:
-        return False
+    for x in range(6):
+        try:
+            if string[x][0] == string[x+1][0]:
+                a = string[x]; b = string[x+1]
+                del string[x+1]
+                if a == 'R':
+                    if b == 'R':
+                        string[x] = 'R2'
+                    elif b == 'R\'':
+                        del string[x]
+                    else:
+                        string[x] = 'R\''
+                elif a == 'U':
+                    if b == 'U':
+                        string[x] = 'U2'
+                    elif b == 'U\'':
+                        del string[x]
+                    else:
+                        string[x] = 'U\''
+                elif a == 'F':
+                    if b == 'F':
+                        string[x] = 'F2'
+                    elif b == 'F\'':
+                        del string[x]
+                    else:
+                        string[x] = 'F\''
+                elif a == 'R\'':
+                    if b == 'R':
+                        del string[x]
+                    elif b == 'R\'':
+                        string[x] = 'R2'
+                    else:
+                        string[x] = 'R'
+                elif a == 'U\'':
+                    if b == 'U2':
+                        string[x] = 'U'
+                    elif b == 'U':
+                        del string[x]
+                    else:
+                        string[x] = 'U2'
+                elif a == 'F\'':
+                    if b == 'F\'':
+                        string[x] = 'F2'
+                    elif b == 'F2':
+                        string[x] = 'F'
+                    else:
+                        del string[x]
+                elif a == 'R2':
+                    if b == 'R':
+                        string[x] = 'R\''
+                    elif b == 'R2':
+                        del string[x]
+                    else:
+                        string[x] = 'R'
+                elif a == 'U2':
+                    if b == 'U':
+                        string[x] = 'U\''
+                    elif b == 'U2':
+                        del string[x]
+                    else:
+                        string[x] = 'U'
+                else:
+                    if b == 'F\'':
+                        string[x] = 'F'
+                    elif b == 'F2':
+                        del string[x]
+                    else:
+                        string[x] = 'F'
+        except:
+            pass
+    return ' '.join(string)
 def generate():
     last = 'i'; scramble = ''; moves = ['R', 'R\'', 'R2', 'U', 'U\'', 'U2', 'F', 'F\'', 'F2']
     for i in 'twelveletter':
@@ -407,24 +307,23 @@ def generate():
         last = moves[index]
     return scramble
 def find(u):
-    if u[1:5] == ['w', 'w', 'w', 'w']:
+    if u[:4] == ['w', 'w', 'w', 'w']:
         return 'white'
-    elif u[5:9] == ['o', 'o', 'o', 'o']:
+    elif u[4:8] == ['o', 'o', 'o', 'o']:
         return 'orange'
-    elif u[9:13] == ['g', 'g', 'g', 'g']:
+    elif u[8:12] == ['g', 'g', 'g', 'g']:
         return 'green'
-    elif u[13:17] == ['r', 'r', 'r', 'r']:
+    elif u[12:16] == ['r', 'r', 'r', 'r']:
         return 'red'
-    elif u[17:21] == ['b', 'b', 'b', 'b']:
+    elif u[16:20] == ['b', 'b', 'b', 'b']:
         return 'blue'
-    elif u[21:25] == ['y', 'y', 'y', 'y']:
+    elif u[20:24] == ['y', 'y', 'y', 'y']:
         return 'yellow'
     else:
         return ''
 def reverse(v):
     newv = ''
-    vs = v[25].split()
-    for i in vs[::-1]:
+    for i in v[24:].split()[::-1]:
         if i == 'R':
             newv = newv + 'R\' '
         elif i == 'U':
