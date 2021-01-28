@@ -1,7 +1,7 @@
 import time, movedictionary
 solved = 'wwwwooooggggrrrrbbbbyyyy'
 q = 1
-print('CUBE(2x2)v5.0')
+print('CUBE(2x2)v5.2')
 choice = input('timer, (e)ditor, (c)alculator: ')
 if choice == 'c':
     sol = []
@@ -21,37 +21,34 @@ if choice == 'c':
         fromscrambled = []; fromsolved = []; found = []
         print('trying depth {}({})'.format(q, q*2))
         finded = movedictionary.guesses(q)
-        print('generated all guesses for depth {}({}) at {:.2f}s'.format(q, q*2, time.time() - starting))
+        print('generated all guesses for depth {}({}) at {:.3f}s'.format(q, q*2, time.time() - starting))
         for l in finded:
             fromscrambled.append(movedictionary.scramble(current[:24], l))
             fromsolved.append(movedictionary.scramble(solved, l))
-        print('scrambled all at depth {}({}) at {:.2f}s'.format(q, q*2, time.time() - starting))
+        print('scrambled all at depth {}({}) at {:.3f}s'.format(q, q*2, time.time() - starting))
         for u in fromscrambled:
             for v in fromsolved:
                 if u[:24] == v[:24]:
                     nex = movedictionary.clean(u[24:] + ' ' + movedictionary.reverse(v))
                     if nex not in found:
-                        print(nex)
+                        print('{} at {:.3f}s'.format(nex, time.time() - starting))
                         found.append(nex)
                         q = -1
         print('finished checking')
         if sol == 1:
             q = -1
         q += 1
-    print('done at {:.2f}s'.format(time.time() - starting))
+    print('done at {:.3f}s'.format(time.time() - starting))
 elif choice == 'e':
     while True:
-        keeps = ''
         emoves = input('enter (r for random): ')
         if emoves == 'r':
-            keeps = movedictionary.generate()
-            state = movedictionary.scramble(current, keeps)
+            emoves = movedictionary.generate()
+            state = movedictionary.scramble(current, emoves)
         else:
-            keeps = keeps + emoves + ' '
-            state = movedictionary.scramble(solved, keeps)
+            state = movedictionary.scramble(solved, emoves)
         print(state)
         movedictionary.output(state)
-        print('( {})'.format(keeps))
 else:
     choose = input('(e)nter times or timer: ')
     w = 0; x = 0; z = 0; best_five = 0; best_twelve = 0; best_solve = 999.99; worst_solve = 0.0; currentsession = []
@@ -71,7 +68,7 @@ else:
             timed = end - start
             timed = '{:.2f}'.format(float(timed))
             print(timed)
-        time.sleep(2)
+        time.sleep(1)
         currentsession.append(timed)
         if float(timed) > worst_solve:
             worst_solve = float(timed)
@@ -102,21 +99,20 @@ else:
             x += float(i)
             z += 1.0
         session_avg = x/z
-        x = 0; z = 0; fromscrambled = []; sol = []
+        x = 0; z = 0; found = []
         print('session avg: {:.2f}'.format(session_avg))
-        time.sleep(2)
+        time.sleep(1)
         while q != 0:
+            fromscrambled = []
             for l in movedictionary.guesses(q):
-                fromscrambled.append(movedictionary.scramble(scrambled, l))
+                fromscrambled.append(movedictionary.scramble(scrambled[:24], l))
             for u in fromscrambled:
-                if u[25] in sol:
-                    break
-                temp = movedictionary.find(u)
-                if temp != '':
-                    print('solution {} {}'.format(u[25], temp))
-                    sol.append(u[25])
-            if sol:
-                q = -1
+                f = movedictionary.find(u)
+                if f != '':
+                    if u[24:] not in found:
+                        print('{} {}'.format(movedictionary.clean(u[24:]), f))
+                        found.append(u[24:])
+                        q = -1
             q += 1
         q = 1
         print('\n\n\n')
