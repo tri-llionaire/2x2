@@ -62,11 +62,34 @@ def scramble(current, entered_scramble):
             new[i] = current[int(move[(2*i):(2*i)+2])]
         current = ''.join(new)
     return current + entered_scramble
-def issolved(status):
-    if (status[0] == status[1] == status[2] == status[3]) and (status[4] == status[5] == status[6] == status[7]) and (status[8] == status[9] == status[10] == status[11]) and (status[12] == status[13] == status[14] == status[15]) and (status[16] == status[17] == status[18] == status[19]) and (status[20] == status[21] == status[22] == status[23]):
-        return True
+def layer(s):
+    if (s[0] == s[1] == s[2] == s[3]) and (s[4] == s[5]) and (s[8] == s[9]) and (s[12] == s[13]) and (s[16] == s[17]):
+        return quick(s[0])
+    elif (s[4] == s[5] == s[6] == s[7]) and (s[1] == s[2]) and (s[9] == s[10]) and (s[16] == s[19]) and (s[21] == s[22]):
+        return quick(s[4])
+    elif (s[8] == s[9] == s[10] == s[11]) and (s[2] == s[3]) and (s[4] == s[7]) and (s[13] == s[14]) and (s[20] == s[21]):
+        return quick(s[8])
+    elif (s[12] == s[13] == s[14] == s[15]) and (s[0] == s[3]) and (s[8] == s[11]) and (s[17] == s[18]) and (s[20] == s[23]):
+        return quick(s[12])
+    elif (s[16] == s[17] == s[18] == s[19]) and (s[0] == s[1]) and (s[5] == s[6]) and (s[12] == s[15]) and (s[22] == s[23]):
+        return quick(s[16])
+    elif (s[20] == s[21] == s[22] == s[23]) and (s[6] == s[7]) and (s[10] == s[11]) and (s[14] == s[15]) and (s[18] == s[19]):
+        return quick(s[20])
     else:
-        return False
+        return ''
+def quick(s):
+    if s == 'w':
+        return 'white'
+    elif s == 'o':
+        return 'orange'
+    elif s == 'g':
+        return 'green'
+    elif s == 'r':
+        return 'red'
+    elif s == 'b':
+        return 'blue'
+    else:
+        return 'yellow'
 def guesses(repeating):
     was = ''; todo = []; bad = 0; moves = ['R', 'R\'', 'R2', 'U', 'U\'', 'U2', 'F', 'F\'', 'F2']
     for x in itertools.product(moves, repeat=repeating):
