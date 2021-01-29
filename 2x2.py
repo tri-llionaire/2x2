@@ -1,7 +1,7 @@
 import time, movedictionary
 solved = 'wwwwooooggggrrrrbbbbyyyy'
 q = 1
-print('CUBE(2x2)v5.2')
+print('CUBE(2x2)v5.5')
 choice = input('timer, (e)ditor, (c)alculator: ')
 if choice == 'c':
     sol = []
@@ -31,7 +31,7 @@ if choice == 'c':
                 if u[:24] == v[:24]:
                     nex = movedictionary.clean(u[24:] + ' ' + movedictionary.reverse(v))
                     if nex not in found:
-                        print('{} at {:.3f}s'.format(nex, time.time() - starting))
+                        print('{} ({}) at {:.3f}s'.format(nex, len(nex.split()), time.time() - starting))
                         found.append(nex)
                         q = -1
         print('finished checking')
@@ -40,13 +40,17 @@ if choice == 'c':
         q += 1
     print('done at {:.3f}s'.format(time.time() - starting))
 elif choice == 'e':
+    state = solved
+    maintain = input('maintain state y/n: ')
     while True:
         emoves = input('enter (r for random): ')
+        if maintain == 'n':
+            state = solved
         if emoves == 'r':
             emoves = movedictionary.generate()
-            state = movedictionary.scramble(current, emoves)
+            state = movedictionary.scramble(state, emoves)
         else:
-            state = movedictionary.scramble(solved, emoves)
+            state = movedictionary.scramble(state, emoves)
         print(state)
         movedictionary.output(state)
 else:
@@ -78,18 +82,18 @@ else:
             print('new best solve')
         w += 1
         if (w % 5) == 0:
-            for i in currentsession:
+            for i in sorted(list(map(float, currentsession[-5:])))[1:-1]:
                 x += float(i)
-            current_five = x/5
+            current_five = x/3
             x = 0
             print('new avg 5: {:.2f}'.format(current_five))
             if current_five > best_five:
                 print('(also session record for 5)')
                 best_five = current_five
         if (w % 12) == 0:
-            for i in currentsession[-12:]:
+            for i in sorted(list(map(float, currentsession[-12:])))[1:-1]:
                 x += float(i)
-            current_five = x/12
+            current_five = x/10
             x = 0
             print('new avg 12: {:.2f}'.format(current_twelve))
             if current_twelve > best_twelve:
@@ -107,10 +111,23 @@ else:
             for l in movedictionary.guesses(q):
                 fromscrambled.append(movedictionary.scramble(scrambled[:24], l))
             for u in fromscrambled:
+                f = movedictionary.layer(u)
+                if f != '':
+                    if u[24:] not in found:
+                        print('{} {} layer'.format(movedictionary.clean(u[24:]), f))
+                        found.append(u[24:])
+                        q = -1
+            q += 1
+        q = 1
+        while q != 0:
+            fromscrambled = []
+            for l in movedictionary.guesses(q):
+                fromscrambled.append(movedictionary.scramble(scrambled[:24], l))
+            for u in fromscrambled:
                 f = movedictionary.find(u)
                 if f != '':
                     if u[24:] not in found:
-                        print('{} {}'.format(movedictionary.clean(u[24:]), f))
+                        print('{} {} face'.format(movedictionary.clean(u[24:]), f))
                         found.append(u[24:])
                         q = -1
             q += 1
